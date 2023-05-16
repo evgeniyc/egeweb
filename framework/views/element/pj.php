@@ -1,0 +1,1 @@
+<div id="pj-content">This is answer throught Pjax id = <?= $id ?>.</div>
