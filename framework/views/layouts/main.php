@@ -11,6 +11,8 @@ use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
+use yii\widgets\ActiveForm;
+use app\models\ElementSearch;
 
 AppAsset::register($this);
 
@@ -38,17 +40,50 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 		<div class="d-flex">
 			<div id="brand-img" class="d-flex align-items-center">
 				<a class="navbar-brand" href="<?= Url::home() ?>">
-					<img src="<?= Url::home() ?>img/logo1.png" alt="Logo" class="ps-2" width="120px">
+					<img src="<?= Url::home() ?>img/logo5.png" alt="Logo" class="pt-1" width="160px">
 				</a>
 			</div>
 			<div class="d-flex flex-grow-1 flex-column">
 					<div class="row g-0">
 						<div class="col-12 col-lg-8 text-center"><h1 class="m-0"><i><?= Yii::t('app', 'EgeWeb web make studio') ?></i></h1></div>
 						<div class="col-12 col-lg-4 g-0">
-							<form id="main-search" class="input-group mx-auto pt-2 pe-lg-2" role="search">
+							<!--<form id="main-search" class="input-group mx-auto pt-2 pe-lg-2" role="search">
 									<input class="form-control me-2 py-1 fs-6" type="search" placeholder="<?= Yii::t('app', 'Search') ?>" aria-label="Search">
 									<button class="btn btn-secondary py-1 fs-6" type="submit"><?= Yii::t('app', 'Search') ?></button>
-							</form>
+							</form>	-->
+
+							<?php $model = new ElementSearch(); 
+							$form = ActiveForm::begin([
+								'action' => ['element1/index'],
+								'method' => 'get',
+								'id' => 'main-search',
+								
+								'options' => [
+									'role' => 'search',
+									'class' => 'input-group mx-auto pt-2 pe-lg-2',
+								],
+								'fieldConfig' => [
+									'options' => [
+										'tag' => false,
+									]
+								],
+								]
+							); ?>
+
+								<?= $form->field($model, 'title',
+									[
+										'inputOptions' => [
+											'class' => 'form-control me-2 py-1 fs-6',
+											'type' => 'search',
+											'placeholder' => Yii::t('app', 'Search'),
+											'aria-label' => 'Search',
+											'maxlength' => true,
+										],
+										'template' => "{input}\n{hint}\n{error}",
+									]
+								) ?>
+								<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-secondary py-1 fs-6']) ?>
+							<?php ActiveForm::end(); ?>
 						</div>
 					</div>
 				

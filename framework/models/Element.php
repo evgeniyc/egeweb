@@ -40,7 +40,7 @@ class Element extends \yii\db\ActiveRecord
         return [
             [['title'], 'required'],
             [['body'], 'string'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at'], 'date'],
             [['cat'], 'integer'],
             [['title'], 'string', 'max' => 64],
             [['img'], 'string', 'max' => 40],

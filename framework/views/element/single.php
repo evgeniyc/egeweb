@@ -53,9 +53,3 @@ $this->params['breadcrumbs'][] = $model->title;
     ]) ?>
 
 </div>
-
-<?php
-	Pjax::begin();
-		echo Html::a('Pjax test',['element/pj','id'=>2]);
-	Pjax::end();
-?>
