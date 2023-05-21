@@ -18,7 +18,18 @@ use yii\web\IdentityInterface;
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
-    /**
+    const SCENARIO_LOGIN = 'login';
+    const SCENARIO_REGISTER = 'register';
+
+    public function scenarios()
+    {
+        return [
+            self::SCENARIO_LOGIN => ['username', 'password'],
+            self::SCENARIO_REGISTER => ['username', 'email', 'password'],
+        ];
+    }
+	
+	/**
      * {@inheritdoc}
      */
     public static function tableName()
