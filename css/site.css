@@ -97,7 +97,7 @@ body {
 	color: #e7eaef !important;
 	text-shadow: 0 0 2px black;
 }
-.nav-link.active {
+.nav-link.active, .nav-link:hover {
 	color: yellow !important;
 	text-shadow: 0 0 1px red !important;
 }

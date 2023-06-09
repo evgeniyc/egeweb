@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div id="site-login" class = "p-3 mx-auto my-3">
     <h1><?= Html::encode($this->title) ?></h1>
-
+	<?= Html::a('or Register',['user/create'],['class'=>'text-light float-end']) ?>
     <p>Please fill out the following fields to login:</p>
 	
     <?php $form = ActiveForm::begin([
@@ -36,7 +36,8 @@ $this->params['breadcrumbs'][] = $this->title;
 	
         <div class="form-group">
             <div class="offset-lg-1 col-lg-11">
-                <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>&nbsp;&nbsp;
+				
             </div>
         </div>
 

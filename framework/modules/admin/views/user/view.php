@@ -6,17 +6,13 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\User $model */
 
-$this->title = 'User with username "'.$model->username.'"';
-$mess = Yii::$app->session->getFlash('regCompl');
+$this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $model->username;
+$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="user-view">
-	
-    <h1><?= Html::encode($this->title) ?></h1>
-	<div class="text-success mb-2"><?= $mess ?></div>
-		
+
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
@@ -32,10 +28,10 @@ $this->params['breadcrumbs'][] = $model->username;
         'model' => $model,
         'attributes' => [
             'id',
-			'username',
+            'username',
             'email',
             'created_at',
-			'updated_at',
+            'updated_at',
             'status',
         ],
     ]) ?>

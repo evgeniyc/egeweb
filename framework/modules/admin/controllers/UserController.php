@@ -1,8 +1,7 @@
 <?php
 
-namespace app\controllers;
+namespace app\modules\admin\controllers;
 
-use yii;
 use app\models\User;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -14,7 +13,69 @@ use yii\filters\VerbFilter;
  */
 class UserController extends Controller
 {
-    
+    public $layout = 'main';
+	
+	/**
+     * @inheritDoc
+     */
+    public function behaviors()
+    {
+        return array_merge(
+            parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
+                ],
+				
+				'access' => [
+					'class' => \yii\filters\AccessControl::class,
+					'only' => ['login', 'logout', 'signup'],
+					'rules' => [
+						[
+							'allow' => true,
+							'actions' => ['login', 'signup'],
+							'roles' => ['?'],
+						],
+						[
+							'allow' => true,
+							'actions' => ['logout'],
+							'roles' => ['@'],
+						],
+					],
+				],
+			],
+        );
+    }
+
+    /**
+     * Lists all User models.
+     *
+     * @return string
+     */
+    public function actionIndex()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => User::find(),
+            /*
+            'pagination' => [
+                'pageSize' => 50
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ]
+            ],
+            */
+        ]);
+
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Displays a single User model.
      * @param int $id ID
@@ -23,12 +84,9 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
-        if(Yii::$app->user->identity->id == $id) { 
-			return $this->render('view', [
-				'model' => $this->findModel($id),
-			]);
-		} else 
-			throw new \yii\web\ForbiddenHttpException;
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
     }
 
     /**
@@ -42,9 +100,7 @@ class UserController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-				Yii::$app->session->setFlash('regCompl', 'Success. Congratulation! You registration is fully completed.');
-				if(Yii::$app->user->login($model))
-					return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
@@ -61,22 +117,20 @@ class UserController extends Controller
      * @param int $id ID
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
-    */
+     */
     public function actionUpdate($id)
     {
-        if(Yii::$app->user->identity->id == $id) { 
-			$model = $this->findModel($id);
-			if ($this->request->isPost) {
-				if ($model->load($this->request->post()) && $model->save()) {
-					Yii::$app->session->setFlash('regCompl', 'You registration data is fully updated.');
-					return $this->redirect(['view', 'id' => $model->id]);
-				}
-			}				
-			return $this->render('update', ['model' => $model]);
-		} else 
-			throw new \yii\web\ForbiddenHttpException;
+        $model = $this->findModel($id);
+
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
-	 
+
     /**
      * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -86,11 +140,9 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        if(Yii::$app->user->identity->id == $id) { 
-			$this->findModel($id)->delete();
-			return $this->redirect(['site/index']);
-		} else 
-			throw new \yii\web\ForbiddenHttpException;	
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
     }
 
     /**

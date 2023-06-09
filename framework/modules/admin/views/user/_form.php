@@ -8,13 +8,11 @@ use yii\widgets\ActiveForm;
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="user-form w-50 m-auto">
+<div class="user-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
 	
 	<?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 	
@@ -25,11 +23,13 @@ use yii\widgets\ActiveForm;
 		'3' => 'admin',
 	
 	]) ?>
-	<br>	
-    <div class="form-group">
+
+    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+	
+	<div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
-</div><br>
+</div>

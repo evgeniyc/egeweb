@@ -18,17 +18,18 @@ use yii\web\IdentityInterface;
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
-    const SCENARIO_LOGIN = 'login';
-    const SCENARIO_REGISTER = 'register';
-
+    //const SCENARIO_LOGIN = 'login';
+    //const SCENARIO_REGISTER = 'register';
+/*
     public function scenarios()
     {
         return [
-            self::SCENARIO_LOGIN => ['username', 'password'],
-            self::SCENARIO_REGISTER => ['username', 'email', 'password'],
+            //self::SCENARIO_DEFAULT => ['username', 'email', 'password', 'status'],
+			//self::SCENARIO_LOGIN => ['username', 'password'],
+            //self::SCENARIO_REGISTER => ['username', 'email', 'password'],
         ];
     }
-	
+	*/
 	/**
      * {@inheritdoc}
      */
@@ -79,6 +80,14 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->username;
     }
+	
+	/**
+     * @return int|string current username
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
 
     /**
      * @return string|null current user auth key
@@ -110,7 +119,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
-                $this->auth_key = \Yii::$app->security->generateRandomString();
+                //$this->auth_key = \Yii::$app->security->generateRandomString();
 				$this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
 				$this->created_at = date('Y-m-d');
 				$this->status = 'user';
@@ -136,8 +145,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['username'], 'string', 'max' => 16],
 			[['username'], 'unique'],
             [['password'], 'string', 'max' => 60],
+			[['email'], 'email'],
             [['auth_key', 'accessToken'], 'string', 'max' => 32],
-            [['status'], 'string', 'max' => 12],
+            [['status'], 'in', 'range' => ['1', '2', '3']],
         ];
     }
 
@@ -150,6 +160,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'id' => 'ID',
             'username' => 'Логин',
             'password' => 'Пароль',
+			'email' => 'email',
             'auth_key' => 'Auth Key',
             'accessToken' => 'Access Token',
             'created_at' => 'Created At',

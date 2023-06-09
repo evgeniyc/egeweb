@@ -2,7 +2,8 @@
 use yii\helpers\Html;
 use app\models\LoginForm;
 
-$model = new LoginForm();
+if(!isset($model))
+		$model = new LoginForm();
 ?>
 <div class="card">
     <div class="card-body login-card-body">
